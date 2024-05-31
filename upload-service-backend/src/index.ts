@@ -34,9 +34,9 @@ app.post("/upload", async (req, res) => {
   const id = generateId();
 
   if (url) {
-    await simpleGit().clone(url, `output/${id}`);
+    await simpleGit().clone(url, `../output/${id}`);
 
-    const result = getAllFiles(`output/${id}`);
+    const result = getAllFiles(`../output/${id}`);
 
     console.log(result);
 
