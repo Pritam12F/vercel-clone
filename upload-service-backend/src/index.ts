@@ -4,6 +4,8 @@ import simpleGit from "simple-git";
 import { getAllFiles } from "./utils/getAllFiles";
 import { generateId } from "./utils/generateId";
 import path from "path";
+import { uploadFile } from "./r2";
+import e from "express";
 
 const app = express();
 const PORT = 3002;
@@ -26,6 +28,11 @@ app.post("/upload", async (req, res) => {
       const result = getAllFiles(path.join(__dirname, `output/${id}`));
 
       console.log(result);
+      // result.forEach((el) => {
+      //   const res = el.split("\\");
+      //   const remoteFilePath = `output/${id}/${res[res.length - 1]}`;
+      //   console.log(remoteFilePath);
+      // });
 
       return res.json({
         id,
