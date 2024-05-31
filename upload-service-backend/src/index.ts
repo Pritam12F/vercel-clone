@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import simpleGit from "simple-git";
 import { getAllFiles } from "./utils/getAllFiles";
+import { generateId } from "./utils/generateId";
+import path from "path";
 
 const app = express();
 const PORT = 3002;
@@ -13,36 +15,26 @@ app.use(
 );
 app.use(express.json());
 
-const generateId = () => {
-  let str = "";
-  let alpha = "abcdefghijklmnopqrstuvwxyz";
-
-  const random = Math.floor(Math.random() * 100000) + 1;
-
-  for (let i = 0; i < 5; ++i) {
-    const randomAl = alpha[Math.floor(Math.random() * 26)];
-    str += randomAl;
-  }
-
-  str = str.concat(random.toString());
-
-  return str;
-};
-
 app.post("/upload", async (req, res) => {
   const url = req.body?.gitUrl;
   const id = generateId();
 
   if (url) {
-    await simpleGit().clone(url, `../output/${id}`);
+    try {
+      await simpleGit().clone(url, path.join(__dirname, `output/${id}`));
 
-    const result = getAllFiles(`../output/${id}`);
+      const result = getAllFiles(path.join(__dirname, `output/${id}`));
 
-    console.log(result);
+      console.log(result);
 
-    return res.json({
-      message: id,
-    });
+      return res.json({
+        id,
+      });
+    } catch (err) {
+      return res.json({
+        error: "Invalid repo url",
+      });
+    }
   }
   return res.json({
     error: "No url provided",
