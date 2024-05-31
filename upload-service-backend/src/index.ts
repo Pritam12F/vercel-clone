@@ -5,7 +5,6 @@ import { getAllFiles } from "./utils/getAllFiles";
 import { generateId } from "./utils/generateId";
 import path from "path";
 import { uploadFile } from "./r2";
-import e from "express";
 
 const app = express();
 const PORT = 3002;
@@ -19,6 +18,7 @@ app.use(express.json());
 
 app.post("/upload", async (req, res) => {
   const url = req.body?.gitUrl;
+  const seperator = path.sep;
   const id = generateId();
 
   if (url) {
@@ -26,13 +26,14 @@ app.post("/upload", async (req, res) => {
       await simpleGit().clone(url, path.join(__dirname, `output/${id}`));
 
       const result = getAllFiles(path.join(__dirname, `output/${id}`));
+      let it = 0;
 
-      console.log(result);
-      // result.forEach((el) => {
-      //   const res = el.split("\\");
-      //   const remoteFilePath = `output/${id}/${res[res.length - 1]}`;
-      //   console.log(remoteFilePath);
-      // });
+      result.forEach((el) => {
+        const res = el.split(seperator);
+        const remoteFilePath = `output/${id}/${res[res.length - 1]}`;
+
+        uploadFile(remoteFilePath, result[it++]);
+      });
 
       return res.json({
         id,
