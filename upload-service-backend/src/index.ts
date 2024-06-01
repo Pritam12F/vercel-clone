@@ -5,7 +5,10 @@ import { getAllFiles } from "./utils/getAllFiles";
 import { generateId } from "./utils/generateId";
 import path from "path";
 import { uploadFile } from "./r2";
+import { createClient } from "redis";
 
+const client = createClient();
+client.connect();
 const app = express();
 const PORT = 3002;
 
@@ -31,6 +34,8 @@ app.post("/upload", async (req, res) => {
         const remoteFilePath = el.substring(__dirname.length + 1);
         await uploadFile(remoteFilePath, el);
       });
+
+      client.lPush("vercel-build-queue", id);
 
       return res.json({
         id,
