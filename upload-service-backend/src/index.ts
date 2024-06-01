@@ -27,9 +27,9 @@ app.post("/upload", async (req, res) => {
 
       const result = getAllFiles(path.join(__dirname, `output/${id}`));
 
-      result.forEach((el) => {
+      result.forEach(async (el) => {
         const remoteFilePath = el.substring(__dirname.length + 1);
-        uploadFile(remoteFilePath, el);
+        await uploadFile(remoteFilePath, el);
       });
 
       return res.json({
