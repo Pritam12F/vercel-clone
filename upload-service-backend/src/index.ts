@@ -26,13 +26,10 @@ app.post("/upload", async (req, res) => {
       await simpleGit().clone(url, path.join(__dirname, `output/${id}`));
 
       const result = getAllFiles(path.join(__dirname, `output/${id}`));
-      let it = 0;
 
       result.forEach((el) => {
-        const res = el.split(seperator);
-        const remoteFilePath = `output/${id}/${res[res.length - 1]}`;
-
-        uploadFile(remoteFilePath, result[it++]);
+        const remoteFilePath = el.substring(__dirname.length + 1);
+        uploadFile(remoteFilePath, el);
       });
 
       return res.json({
