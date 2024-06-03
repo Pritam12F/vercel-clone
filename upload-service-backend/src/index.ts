@@ -6,6 +6,7 @@ import { generateId } from "./utils/generateId";
 import path from "path";
 import { uploadFile } from "./r2";
 import { createClient } from "redis";
+import fs from "fs";
 
 const client = createClient();
 client.connect();
@@ -21,7 +22,6 @@ app.use(express.json());
 
 app.post("/upload", async (req, res) => {
   const url = req.body?.gitUrl;
-  const seperator = path.sep;
   const id = generateId();
 
   if (url) {
@@ -35,6 +35,7 @@ app.post("/upload", async (req, res) => {
         await uploadFile(remoteFilePath, el);
       });
 
+      fs.rmdirSync(path.join(__dirname, `output/${id}`), { recursive: true });
       client.lPush("vercel-build-queue", id);
 
       return res.json({
