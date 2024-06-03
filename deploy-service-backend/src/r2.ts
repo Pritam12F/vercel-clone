@@ -5,7 +5,7 @@ import path from "path";
 
 dotenv.config();
 
-const r2Client = new S3({
+export const r2Client = new S3({
   endpoint: `https://${process.env.ACCOUNT_ID}.r2.cloudflarestorage.com`,
   accessKeyId: process.env.ACCESS_KEY || "",
   secretAccessKey: process.env.SECRET || "",
@@ -19,7 +19,7 @@ export const downloadFiles = async (id: string | undefined) => {
   const allFiles = await r2Client
     .listObjectsV2({
       Bucket: "vercel-clone",
-      Prefix: `vercel-clone/output/${id}`,
+      Prefix: `output/${id}`,
     })
     .promise();
 
@@ -34,10 +34,7 @@ export const downloadFiles = async (id: string | undefined) => {
           res("");
           return;
         }
-        const localFilePath = path.join(
-          __dirname,
-          Key?.slice(Key.indexOf("/") + 1) || ""
-        );
+        const localFilePath = path.join(__dirname, Key);
         const outputFile = fs.createWriteStream(localFilePath);
         const dirName = path.dirname(localFilePath);
         if (!fs.existsSync(dirName)) {

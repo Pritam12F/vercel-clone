@@ -1,5 +1,6 @@
 import { commandOptions, createClient } from "redis";
 import { downloadFiles } from "./r2";
+import { buildProject } from "./build";
 
 //Connect to the queue
 const queueClient = createClient();
@@ -14,6 +15,7 @@ async function main() {
     );
 
     await downloadFiles(id?.element);
+    await buildProject(id?.element);
   }
 }
 

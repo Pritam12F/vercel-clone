@@ -5,7 +5,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const r2Client = new S3({
-  endpoint: `https://${process.env.ACCOUNT_ID}.r2.cloudflarestorage.com/vercel-clone`,
+  endpoint: `https://${process.env.ACCOUNT_ID}.r2.cloudflarestorage.com`,
   accessKeyId: process.env.ACCESS_KEY || "",
   secretAccessKey: process.env.SECRET || "",
 });
