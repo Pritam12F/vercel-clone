@@ -13,9 +13,7 @@ async function main() {
       0
     );
 
-    if (id?.element) {
-      downloadFiles(id.element);
-    }
+    await downloadFiles(id?.element);
   }
 }
 
