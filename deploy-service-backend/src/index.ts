@@ -17,12 +17,7 @@ async function main() {
       "vercel-build-queue",
       0
     );
-    console.log(
-      "Waiting for files to get uploaded to R2, starting download in 25 seconds"
-    );
-    setTimeout(async () => {
-      await downloadFiles(id?.element as string);
-    }, 25000);
+    await downloadFiles(id?.element as string);
     await buildProject(id?.element);
     console.log("Build done!");
     await uploadFiles(id?.element);

@@ -39,6 +39,8 @@ app.post("/upload", async (req, res) => {
         await uploadFile(remoteFilePath, el);
       });
 
+      await new Promise((resolve) => setTimeout(resolve, 25000));
+
       fs.rmdirSync(path.join(__dirname, `output/${id}`), { recursive: true });
       publisher.lPush("vercel-build-queue", id);
       publisher.hSet("status", id, "uploaded");
