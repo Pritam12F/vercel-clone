@@ -2,13 +2,15 @@ import fs from "fs";
 import path from "path";
 import { r2Client } from "./r2";
 
-export const uploadFiles = (id: string | undefined) => {
+export const uploadFiles = async (id: string | undefined) => {
   const allFiles = getAllFiles(path.join(__dirname, `output/${id}/dist`));
   allFiles.forEach(async (key) => {
     const remoteFilePath = key.slice(key.indexOf("/output") + 1);
     await uploadFile(remoteFilePath, key);
   });
   console.log("Uploaded to r2!");
+  fs.rmdirSync(path.join(__dirname, `output/${id}`), { recursive: true });
+  console.log("Deleted !");
 };
 
 const getAllFiles = (folderPath: string) => {
