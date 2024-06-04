@@ -10,6 +10,10 @@ import fs from "fs";
 
 const publisher = createClient();
 publisher.connect();
+
+const subscriber = createClient();
+subscriber.connect();
+
 const app = express();
 const PORT = 3002;
 
@@ -51,6 +55,20 @@ app.post("/upload", async (req, res) => {
   return res.json({
     error: "No url provided",
   });
+});
+
+app.get("/status", async (req, res) => {
+  const id = req.query.id;
+  const status = await subscriber.hGet("status", id as string);
+  if (status === "deployed") {
+    return res.json({
+      message: "Done",
+    });
+  } else {
+    return res.json({
+      message: "Not done",
+    });
+  }
 });
 
 app.listen(PORT, () => {

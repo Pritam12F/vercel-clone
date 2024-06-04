@@ -26,7 +26,11 @@ async function main() {
     await buildProject(id?.element);
     console.log("Build done!");
     await uploadFiles(id?.element);
-    publisher.hSet("status", id?.element as string, "deployed");
+    const res = await publisher.hSet(
+      "status",
+      id?.element as string,
+      "deployed"
+    );
   }
 }
 
