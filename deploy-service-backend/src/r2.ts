@@ -11,7 +11,7 @@ export const r2Client = new S3({
   secretAccessKey: process.env.SECRET || "",
 });
 
-export const downloadFiles = async (id: string | undefined) => {
+export const downloadFiles = async (id: string) => {
   if (!id) {
     console.log("early return");
     return;
@@ -24,6 +24,7 @@ export const downloadFiles = async (id: string | undefined) => {
     .promise();
 
   if (!id) {
+    console.log("err");
     return;
   }
 

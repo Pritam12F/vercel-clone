@@ -8,8 +8,8 @@ import { uploadFile } from "./r2";
 import { createClient } from "redis";
 import fs from "fs";
 
-const client = createClient();
-client.connect();
+const publisher = createClient();
+publisher.connect();
 const app = express();
 const PORT = 3002;
 
@@ -36,7 +36,8 @@ app.post("/upload", async (req, res) => {
       });
 
       fs.rmdirSync(path.join(__dirname, `output/${id}`), { recursive: true });
-      client.lPush("vercel-build-queue", id);
+      publisher.lPush("vercel-build-queue", id);
+      publisher.hSet("status", id, "uploaded");
 
       return res.json({
         id,
