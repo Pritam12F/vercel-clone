@@ -53,4 +53,6 @@ export const downloadFiles = async (id: string | undefined) => {
   console.log("Awaiting");
 
   await Promise.all(allPromises);
+
+  console.log("Download done!");
 };

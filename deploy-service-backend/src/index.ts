@@ -19,8 +19,8 @@ async function main() {
 
     await downloadFiles(id?.element);
     await buildProject(id?.element);
+    console.log("Build done!");
     uploadFiles(id?.element);
-    fs.rmdirSync(path.join(__dirname, `output/${id}`), { recursive: true });
   }
 }
 
