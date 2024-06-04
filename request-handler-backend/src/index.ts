@@ -4,8 +4,15 @@ import cors from "cors";
 const app = express();
 app.use(express.json(), cors());
 
-app.get("/", (req, res) => {});
+app.get("/*", (req, res) => {
+  const url = req.headers.host;
+  const id = url?.split(".")[0];
 
-app.listen(3002, () => {
-  console.log("Listening on port 3002");
+  return res.json({
+    id,
+  });
+});
+
+app.listen(3001, () => {
+  console.log("Listening on port 3001");
 });
