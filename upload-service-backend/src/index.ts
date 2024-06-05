@@ -17,17 +17,14 @@ subscriber.connect();
 const app = express();
 const PORT = 3002;
 
-app.use(
-  cors({
-    origin: "http://localhost:3000/",
-  })
-);
+app.use(cors());
 app.use(express.json());
 
 app.post("/upload", async (req, res) => {
   const url = req.body?.gitUrl;
   const id = generateId();
-
+  console.log("Caught!");
+  console.log(id);
   if (url) {
     try {
       await simpleGit().clone(url, path.join(__dirname, `output/${id}`));
@@ -39,7 +36,7 @@ app.post("/upload", async (req, res) => {
         await uploadFile(remoteFilePath, el);
       });
 
-      await new Promise((resolve) => setTimeout(resolve, 25000));
+      await new Promise((resolve) => setTimeout(resolve, 5000));
 
       fs.rmdirSync(path.join(__dirname, `output/${id}`), { recursive: true });
       publisher.lPush("vercel-build-queue", id);
@@ -64,11 +61,11 @@ app.get("/status", async (req, res) => {
   const status = await subscriber.hGet("status", id as string);
   if (status === "deployed") {
     return res.json({
-      message: "Done",
+      status: "deployed",
     });
   } else {
     return res.json({
-      message: "Not done",
+      status: "uploaded",
     });
   }
 });
