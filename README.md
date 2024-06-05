@@ -1,6 +1,6 @@
 # This is a vercel clone made using node js, express, react and typescript
 
-It is divided into three parts - 
+It is divided into four parts - 
 
 1. Upload service - For cloning the github repo and uploading it to R2
 2. Deploy service - Copying over the github repo from R2, building it and sending the assets to R2 again
